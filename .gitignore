@@ -14,7 +14,14 @@
 
 *.pro.user
 *.pro.user.*
+*.vcxproj.user
 moc_*.cpp
 qrc_*.cpp
 Makefile
 *-build-*
+/DataUtilLibrary/Debug/DataUtilLibrary.tlog
+/ipch
+/Lib/Debug
+/UILibrary/ipch/UILIBRARY-3312dddb
+/UILibrary/Debug/UILibrary.tlog
+/UILibrary/GeneratedFiles
