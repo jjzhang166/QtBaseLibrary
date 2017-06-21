@@ -3,10 +3,10 @@
 #include <QMutex>
 #include <QScopedPointer>
 
-//µ¥ÀıÄ£Ê½ÖúÊÖÀà
+//å•ä¾‹æ¨¡å¼åŠ©æ‰‹ç±»
 
 
-//ÉùÃ÷
+//å£°æ˜
 //==================================================================================================
 template<typename T>
 class SingletonHelper 
@@ -20,7 +20,7 @@ private:
 };
 
 
-//ÊµÏÖ
+//å®ç°
 //==================================================================================================
 template<typename T> QMutex SingletonHelper<T>::mutex;
 template<typename T> QScopedPointer<T> SingletonHelper<T>::instance;
@@ -41,13 +41,16 @@ T * SingletonHelper<T>::getInstance()
 	return instance.data();
 }
 
-//ÖúÊÖºê
+//åŠ©æ‰‹å®
 //==================================================================================================
 #define SINGLETONHELPER(Class)						\
 private:											\
 	Class();										\
 	~Class();										\
-	friend class SingletonHelper<Class>;
+    Class(const Class &other);						\
+    Class& operator=(const Class &other);			\
+	friend class SingletonHelper<Class>;			\
+	friend struct QScopedPointerDeleter<Class>;
 
 
 

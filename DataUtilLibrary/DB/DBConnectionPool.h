@@ -1,20 +1,24 @@
 #pragma once
 
-#include "DataGlobal.h"
 #include "SingletonHelper.h"
 
 #include <QSqlDatabase>
+
 
 //==================================================================================================
 class DBConnectionPoolPrivate;
 class DBConnectionPool
 {
 public:
+	DBConnectionPool(const QString configDBName = "db");
+	~DBConnectionPool();
+
+public:
+	void destory();
 	QSqlDatabase getConnection();
-	void releaseConnection();
+	void releaseConnection(const QSqlDatabase &connection);
 
 private:
-	SINGLETONHELPER(DBConnectionPool);
 	Q_DECLARE_PRIVATE(DBConnectionPool);
 	DBConnectionPoolPrivate * d_ptr;
 };

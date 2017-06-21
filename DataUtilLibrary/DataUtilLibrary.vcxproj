@@ -45,6 +45,7 @@
       <PrecompiledHeader>Use</PrecompiledHeader>
       <PrecompiledHeaderFile>stdafx.h</PrecompiledHeaderFile>
       <PrecompiledHeaderOutputFile>$(IntDir)$(TargetName).pch</PrecompiledHeaderOutputFile>
+      <DisableSpecificWarnings>4819;%(DisableSpecificWarnings)</DisableSpecificWarnings>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -75,22 +76,27 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="..\CommonFiles\JsonConfigHandle.cpp" />
-    <ClCompile Include="..\CommonFiles\SysConfig.cpp" />
-    <ClCompile Include="DataUtilLibrary.cpp" />
-    <ClCompile Include="DB\DBConnectionPool.cpp" />
-    <ClCompile Include="stdafx.cpp">
+    <ClCompile Include="..\CommonFiles\stdafx.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Create</PrecompiledHeader>
     </ClCompile>
+    <ClCompile Include="..\CommonFiles\SysConfig.cpp" />
+    <ClCompile Include="DataUtilLibrary.cpp" />
+    <ClCompile Include="DB\DatabaseUtil.cpp" />
+    <ClCompile Include="DB\DBConnectionPool.cpp" />
+    <ClCompile Include="DB\DBConnectionPoolManger.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="..\CommonFiles\AppAssiant.h" />
     <ClInclude Include="..\CommonFiles\JsonConfigHandle.h" />
     <ClInclude Include="..\CommonFiles\SingletonHelper.h" />
+    <ClInclude Include="..\CommonFiles\stdafx.h" />
     <ClInclude Include="..\CommonFiles\SysConfig.h" />
     <ClInclude Include="DataUtilLibrary.h" />
     <ClInclude Include="DataGlobal.h" />
+    <ClInclude Include="DB\DatabaseUtil.h" />
     <ClInclude Include="DB\DBConnectionPool.h" />
-    <ClInclude Include="stdafx.h" />
+    <ClInclude Include="DB\DBConnectionPoolManger.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

@@ -42,7 +42,7 @@ JsonConfigHandlePrivate::JsonConfigHandlePrivate(const QString & strPath) :strFi
 		qDebug() << QString("Cannot open the file: %1").arg(strFilePath);
 	}
 
-	//½âÎöJSON
+	//è§£æžJSON
 	QJsonParseError error;
 	QJsonDocument jsonDoc = QJsonDocument::fromJson(json, &error);
 	root = jsonDoc.object();
@@ -72,7 +72,7 @@ QJsonValue JsonConfigHandlePrivate::getValue(const QString & attrName, const QJs
 	return parent.value(keys.last());
 }
 
-//±éÀú·½Ê½ÉèÖÃÖµ
+//éåŽ†æ–¹å¼è®¾ç½®å€¼
 void JsonConfigHandlePrivate::setValue(const QString & attrName, const QJsonValue & attrValue)
 {
 	QStringList keys = attrName.split(QRegularExpression("\\."));
@@ -87,7 +87,7 @@ void JsonConfigHandlePrivate::setValue(const QString & attrName, const QJsonValu
 	attrObject[keys.last()] = attrValue;
 }
 
-//µÝ¹é·½·¨ÉèÖÃÖµ
+//é€’å½’æ–¹æ³•è®¾ç½®å€¼
 void JsonConfigHandlePrivate::setValue(QJsonObject & parent, const QString & attrName, const QJsonValue & attrValue)
 {
 	const int indexOfDot = attrName.indexOf('.');
@@ -154,7 +154,7 @@ QString JsonConfigHandle::getString(const QString & attrName, const QString & de
 	return getJsonValue(attrName, fromNode).toString(default);
 }
 
-QStringList JsonConfigHandle::getString(const QString & attrName, const QJsonObject & fromNode) const
+QStringList JsonConfigHandle::getStringList(const QString & attrName, const QJsonObject & fromNode) const
 {
 	QStringList result;
 	const QJsonArray & array = getJsonArray(attrName, fromNode);

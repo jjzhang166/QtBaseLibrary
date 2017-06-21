@@ -1,4 +1,4 @@
-﻿#include "stdafx.h"
+#include "stdafx.h"
 #include "AppFunctions.h"
 #include "FrameHelperPrivate.h"
 
@@ -29,7 +29,7 @@ FrameHelperPrivate::FrameHelperPrivate(QWidget *parent, QWidget * title)
 	isMousePressed = false;
 	margins = QMargins(5, 5, 5, 5);
 	
-	//根据不同操作系统来区分
+//根据不同操作系统来区分
 #ifndef Q_OS_WIN
 	parent->setWindowFlags(parent->windowFlags() | (Qt::FramelessWindowHint));
 #else

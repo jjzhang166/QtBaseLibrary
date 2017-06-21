@@ -1,7 +1,11 @@
 #include "stdafx.h"
+#include "SysConfig.h"
 #include "DBConnectionPool.h"
 
+#include <QDebug>
 #include <QStack>
+#include <QSqlError>
+#include <QSqlQuery>
 #include <QSemaphore>
 
 
@@ -9,87 +13,241 @@
 class DBConnectionPoolPrivate
 {
 public:
-	DBConnectionPoolPrivate();
+	DBConnectionPoolPrivate(const QString & configDBName);
 	~DBConnectionPoolPrivate();
 
-	//Êı¾İ¿âĞÅÏ¢
+	QSqlDatabase getConnection();
+
+	void closeConnections();
+	void releaseConnection(const QSqlDatabase &connection);
+
+private:
+	QSqlDatabase getConnection(const QString & connectionName);
+	QSqlDatabase createConnection(const QString & connectionName);
+
+	//æ•°æ®åº“ä¿¡æ¯
 	QString strHostName;
 	QString strDBName;
 	QString strUserName;
 	QString strPassword;
 	QString strDBType;
+	QString strDBConnectionName;
 	int iPort;
 
-	bool bTestVaild;					//È¡µÃÁ¬½ÓÊ±ÑéÖ¤Á¬½ÓÊÇ·ñÓĞĞ§£¨¶ÏÏßÖØÁ¬¹¦ÄÜ£©
-	int iMaxWaitTime;					//»ñÈ¡Á¬½Ó×î´óµÈ´ıÊ±¼ä
-	int iMaxConnectionCount;			//×î´óÁ¬½ÓÊı
-	QString strTestSql;					//²âÊÔ·ÃÎÊÊı¾İ¿âÊ¹ÓÃµÄSQL
+	bool bTestVaild;					//å–å¾—è¿æ¥æ—¶éªŒè¯è¿æ¥æ˜¯å¦æœ‰æ•ˆï¼ˆæ–­çº¿é‡è¿åŠŸèƒ½ï¼‰
+	int iMaxWaitTime;					//è·å–è¿æ¥æœ€å¤§ç­‰å¾…æ—¶é—´
+	int iMaxConnectionCount;			//æœ€å¤§è¿æ¥æ•°
+	QString strTestSql;					//æµ‹è¯•è®¿é—®æ•°æ®åº“ä½¿ç”¨çš„SQL
 
-	QSemaphore * pSemaphore;					//»¥³âĞÅºÅÁ¿
-	QStack<QString> usedConnectionNames;		//ÒÑÊ¹ÓÃµÄÁ¬½Ó	
-	QStack<QString> unUsedConnectionNames;		//Î´Ê¹ÓÃµÄÁ¬½Ó
+	QSemaphore * pSemaphore;					//äº’æ–¥ä¿¡å·é‡
+	QStack<QString> usedConnectionNames;		//å·²ä½¿ç”¨çš„è¿æ¥	
+	QStack<QString> unUsedConnectionNames;		//æœªä½¿ç”¨çš„è¿æ¥
 
 	QMutex mutex;
-	int iLastKey;						//Á¬½ÓÃû³ÆĞòºÅ£¬ ±£Ö¤Á¬½ÓÃû×Ö²»ÖØ¸´
+	static int iLastKey;								//è¿æ¥åç§°åºå·ï¼Œ ä¿è¯è¿æ¥åå­—ä¸é‡å¤
 };
 
-
+int DBConnectionPoolPrivate::iLastKey = 0;
 //==================================================================================================
-DBConnectionPoolPrivate::DBConnectionPoolPrivate()
+DBConnectionPoolPrivate::DBConnectionPoolPrivate(const QString & configDBName)
 {
+	pSemaphore = NULL;
 	iPort = 0;
-	iLastKey = 0;
+	iMaxWaitTime = 0;
 	iMaxConnectionCount = 0;
 
-	pSemaphore = new QSemaphore(iMaxConnectionCount);
+	SysConfig * pConfig = SingletonHelper<SysConfig>::getInstance();
+	if (pConfig != NULL && pConfig->isIntit())
+	{
+		strDBName = pConfig->getDBName(configDBName);
+		strDBType = pConfig->getDBType(configDBName);
+		strHostName = pConfig->getDBHost(configDBName);
+		strUserName = pConfig->getDBUserName(configDBName);
+		strPassword = pConfig->getDBPassword(configDBName);
+		strTestSql = pConfig->getDBTestConnectSQL(configDBName);
+		strDBConnectionName = pConfig->getDBConnectionName(configDBName);
+
+		iPort = pConfig->getDBPort(configDBName);
+		iMaxWaitTime = pConfig->getDBMaxWaitTime(configDBName);
+		iMaxConnectionCount = pConfig->getDBMaxConnectionCount(configDBName);
+		bTestVaild = pConfig->isDBTestOnConnect(configDBName);
+
+		pSemaphore = new QSemaphore(iMaxConnectionCount);
+	}
+	
 }
 
 DBConnectionPoolPrivate::~DBConnectionPoolPrivate()
 {
-
+	closeConnections();
+	CHK_POINT_DESTORY(pSemaphore);
 }
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 //==================================================================================================
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-//==================================================================================================
-DBConnectionPool::DBConnectionPool()
+QSqlDatabase DBConnectionPoolPrivate::getConnection()
 {
+	if (pSemaphore && pSemaphore->tryAcquire(1, iMaxWaitTime))
+	{
+		//æœ‰å›æ”¶çš„è¿æ¥åˆ™ä½¿ç”¨æ–°è¿æ¥ï¼Œ æ²¡æœ‰åˆ™æ–°åˆ›å»ºè¿æ¥
+		mutex.lock();
+		QString connectionName = unUsedConnectionNames.size() > 0 ?
+			unUsedConnectionNames.pop() : QString("%1_%2").arg(strDBConnectionName).arg(iLastKey++);
+
+		usedConnectionNames.push(connectionName);
+		mutex.unlock();
+
+		QSqlDatabase db = createConnection(connectionName);
+		if (!db.isOpen())
+		{
+			mutex.lock();
+			usedConnectionNames.removeOne(connectionName);
+			mutex.unlock();
+			pSemaphore->release();
+		}
+
+		return db;
+	}
+	else
+	{
+		//åˆ›å»ºè¿æ¥è¶…æ—¶ï¼Œ è¿”å›ä¸€ä¸ªæ— æ•ˆè¿æ¥
+		qDebug() << "Time out to get connection.";
+		return QSqlDatabase();
+	}
 }
 
+void DBConnectionPoolPrivate::closeConnections()
+{
+	while (unUsedConnectionNames.size() > 0)
+	{
+		mutex.lock();
+		QSqlDatabase db = QSqlDatabase::database(unUsedConnectionNames.pop());
+		mutex.unlock();
+
+		if (db.isOpen())
+			db.close();
+	}
+
+	while (usedConnectionNames.size() > 0)
+	{
+		mutex.lock();
+		QSqlDatabase db = QSqlDatabase::database(usedConnectionNames.pop());
+		mutex.unlock();
+
+		if (db.isOpen())
+			db.close();
+
+		pSemaphore->release();
+	}
+
+}
+
+void DBConnectionPoolPrivate::releaseConnection(const QSqlDatabase &connection)
+{
+	QString connectionName = connection.connectionName();
+	if (usedConnectionNames.contains(connectionName))
+	{
+		mutex.lock();
+		usedConnectionNames.removeOne(connectionName);
+		unUsedConnectionNames.push(connectionName);
+		mutex.unlock();
+
+		pSemaphore->release();
+	}
+}
+
+//==================================================================================================
+QSqlDatabase DBConnectionPoolPrivate::getConnection(const QString & connectionName)
+{
+	if (QSqlDatabase::contains(connectionName))
+	{
+		//è¿æ¥å·²åˆ›å»ºï¼Œ å¤ç”¨è¿æ¥
+		QSqlDatabase dbConnection = QSqlDatabase::database(connectionName);
+
+		if (bTestVaild)
+		{
+			//æµ‹è¯•è¿æ¥æ˜¯å¦æœ‰æ•ˆï¼Œ æ–­çº¿é‡è¿ã€‚
+			QSqlQuery query(strTestSql, dbConnection);
+			if (query.lastError().type() != QSqlError::NoError && !dbConnection.open())
+			{
+				qDebug() << QString("Test connection Failed, executeSQL: %1; connectionName: %2; queryError: %3; dbError: %4.")
+					.arg(strTestSql).arg(connectionName).arg(query.lastError().text()).arg(dbConnection.lastError().text());
+
+				return createConnection(connectionName);
+			}
+		}
+		return dbConnection;
+	}
+
+	return createConnection(connectionName);
+}
+
+QSqlDatabase DBConnectionPoolPrivate::createConnection(const QString & connectionName)
+{
+	QSqlDatabase db = QSqlDatabase::addDatabase(strDBType, connectionName);
+	db.setHostName(strHostName);
+	db.setDatabaseName(strDBName);
+	db.setUserName(strUserName);
+	db.setPassword(strPassword);
+
+	if (iPort != 0)
+		db.setPort(iPort);
+
+	if (!db.open())
+	{
+		qDebug() << "Open database error:" << db.lastError().text();
+	}
+
+	return db;
+}
+
+
+//==================================================================================================
+DBConnectionPool::DBConnectionPool(const QString configDBName)
+{
+	d_ptr = new DBConnectionPoolPrivate(configDBName);
+}
 
 DBConnectionPool::~DBConnectionPool()
 {
+	destory();
 }
+
+//==================================================================================================
+void DBConnectionPool::destory()
+{
+	d_ptr->closeConnections();
+	CHK_POINT_DESTORY(d_ptr);
+}
+
+QSqlDatabase DBConnectionPool::getConnection()
+{
+	Q_D(DBConnectionPool);
+	return d->getConnection();
+}
+
+void DBConnectionPool::releaseConnection(const QSqlDatabase &connection)
+{
+	Q_D(DBConnectionPool);
+	d->releaseConnection(connection);
+}
+
+
+
+
+//==================================================================================================
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+//==================================================================================================

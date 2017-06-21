@@ -35,9 +35,6 @@
     <ClCompile Include="DataUtilLibrary.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="stdafx.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="DB\DBConnectionPool.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -47,12 +44,18 @@
     <ClCompile Include="..\CommonFiles\JsonConfigHandle.cpp">
       <Filter>CommonFiles</Filter>
     </ClCompile>
+    <ClCompile Include="..\CommonFiles\stdafx.cpp">
+      <Filter>CommonFiles</Filter>
+    </ClCompile>
+    <ClCompile Include="DB\DBConnectionPoolManger.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="DB\DatabaseUtil.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="DataUtilLibrary.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="stdafx.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="DataGlobal.h">
@@ -69,6 +72,18 @@
     </ClInclude>
     <ClInclude Include="..\CommonFiles\JsonConfigHandle.h">
       <Filter>CommonFiles</Filter>
+    </ClInclude>
+    <ClInclude Include="..\CommonFiles\AppAssiant.h">
+      <Filter>CommonFiles</Filter>
+    </ClInclude>
+    <ClInclude Include="..\CommonFiles\stdafx.h">
+      <Filter>CommonFiles</Filter>
+    </ClInclude>
+    <ClInclude Include="DB\DBConnectionPoolManger.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="DB\DatabaseUtil.h">
+      <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

@@ -8,7 +8,7 @@
 #include <QJsonDocument>
 
 /************************************************************************
-*	‘⁄Qt Json¿‡ª˘¥°…œµƒ∑‚◊∞£¨ ∑Ω±„∂¡–¥∂‡≤„º∂µƒJson                                                                   
+*	Âú®Qt JsonÁ±ªÂü∫Á°Ä‰∏äÁöÑÂ∞ÅË£ÖÔºå Êñπ‰æøËØªÂÜôÂ§öÂ±ÇÁ∫ßÁöÑJson                                                                   
 *************************************************************************/
 
 //==================================================================================================
@@ -25,7 +25,7 @@ public:
 	double getDouble(const QString & attrName, double default = 0.0, const QJsonObject & fromNode = QJsonObject()) const;
 	QString getString(const QString & attrName, const QString & default = QString(), const QJsonObject & fromNode = QJsonObject()) const;
 	
-	QStringList getString(const QString & attrName, const QJsonObject & fromNode = QJsonObject()) const;
+	QStringList getStringList(const QString & attrName, const QJsonObject & fromNode = QJsonObject()) const;
 	QJsonValue getJsonValue(const QString & attrName, const QJsonObject & fromNode = QJsonObject()) const;
 	QJsonArray getJsonArray(const QString & attrName, const QJsonObject & fromNode = QJsonObject()) const;
 	QJsonObject getJsonObject(const QString & attrName, const QJsonObject & fromNode = QJsonObject()) const;
