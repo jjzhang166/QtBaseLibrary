@@ -56,6 +56,9 @@
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <AdditionalDependencies>qtmaind.lib;Qt5Cored.lib;Qt5Sqld.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
+    <PostBuildEvent>
+      <Command>copy /y $(SolutionDir)Lib\$(Configuration)\$(ProjectName)d.dll  $(SolutionDir)Bin\$(Configuration)\$(ProjectName)d.dll </Command>
+    </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <ClCompile>
@@ -76,6 +79,9 @@
       <GenerateDebugInformation>false</GenerateDebugInformation>
       <AdditionalDependencies>qtmain.lib;Qt5Core.lib;Qt5Sql.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
+    <PostBuildEvent>
+      <Command>copy /y $(SolutionDir)Lib\$(Configuration)\$(ProjectName).dll  $(SolutionDir)Bin\$(Configuration)\$(ProjectName).dll </Command>
+    </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="..\CommonFiles\JsonConfigHandle.cpp" />
@@ -84,10 +90,9 @@
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Create</PrecompiledHeader>
     </ClCompile>
     <ClCompile Include="..\CommonFiles\SysConfig.cpp" />
-    <ClCompile Include="DataUtilLibrary.cpp" />
-    <ClCompile Include="DB\DatabaseUtil.cpp" />
-    <ClCompile Include="DB\DBConnectionPool.cpp" />
-    <ClCompile Include="DB\DBConnectionPoolManger.cpp" />
+    <ClCompile Include="DatabaseUtil.cpp" />
+    <ClCompile Include="DBConnectionPool.cpp" />
+    <ClCompile Include="DBConnectionPoolManger.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\CommonFiles\AppAssiant.h" />
@@ -98,8 +103,7 @@
     <ClInclude Include="..\Include\DataUtilLibrary\DatabaseUtil.h" />
     <ClInclude Include="..\Include\DataUtilLibrary\DataGlobal.h" />
     <ClInclude Include="..\Include\DataUtilLibrary\DBConnectionPoolManger.h" />
-    <ClInclude Include="DataUtilLibrary.h" />
-    <ClInclude Include="DB\DBConnectionPool.h" />
+    <ClInclude Include="DBConnectionPool.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

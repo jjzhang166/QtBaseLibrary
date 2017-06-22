@@ -24,9 +24,6 @@
       <Extensions>moc;h;cpp</Extensions>
       <SourceControlFiles>False</SourceControlFiles>
     </Filter>
-    <Filter Include="Source Files\DB">
-      <UniqueIdentifier>{75be90e4-1ad4-44f3-be82-a6001190e3b5}</UniqueIdentifier>
-    </Filter>
     <Filter Include="CommonFiles">
       <UniqueIdentifier>{442b9636-f043-470b-8202-a048c3aad677}</UniqueIdentifier>
     </Filter>
@@ -41,17 +38,14 @@
     <ClCompile Include="..\CommonFiles\SysConfig.cpp">
       <Filter>CommonFiles</Filter>
     </ClCompile>
-    <ClCompile Include="DB\DatabaseUtil.cpp">
-      <Filter>Source Files\DB</Filter>
+    <ClCompile Include="DatabaseUtil.cpp">
+      <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="DataUtilLibrary.cpp">
-      <Filter>Source Files\DB</Filter>
+    <ClCompile Include="DBConnectionPool.cpp">
+      <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="DB\DBConnectionPool.cpp">
-      <Filter>Source Files\DB</Filter>
-    </ClCompile>
-    <ClCompile Include="DB\DBConnectionPoolManger.cpp">
-      <Filter>Source Files\DB</Filter>
+    <ClCompile Include="DBConnectionPoolManger.cpp">
+      <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -70,12 +64,6 @@
     <ClInclude Include="..\CommonFiles\SingletonHelper.h">
       <Filter>CommonFiles</Filter>
     </ClInclude>
-    <ClInclude Include="DB\DBConnectionPool.h">
-      <Filter>Source Files\DB</Filter>
-    </ClInclude>
-    <ClInclude Include="DataUtilLibrary.h">
-      <Filter>Source Files\DB</Filter>
-    </ClInclude>
     <ClInclude Include="..\Include\DataUtilLibrary\DatabaseUtil.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -84,6 +72,9 @@
     </ClInclude>
     <ClInclude Include="..\Include\DataUtilLibrary\DataGlobal.h">
       <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="DBConnectionPool.h">
+      <Filter>Source Files</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

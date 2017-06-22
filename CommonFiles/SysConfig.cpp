@@ -112,7 +112,7 @@ QString SysConfig::getDBConnectionName(const QString & dbName) const
 
 QString SysConfig::getDBTestConnectSQL(const QString & dbName) const
 {
-	QString attrName = QString("%1.testsql").arg(dbName);
+	QString attrName = QString("%1.test_sql").arg(dbName);
 	return getString(attrName, "select 1");
 }
 
@@ -130,7 +130,7 @@ int SysConfig::getDBMaxWaitTime(const QString & dbName) const
 
 int SysConfig::getDBMaxConnectionCount(const QString & dbName) const
 {
-	QString attrName = QString("%1.max_connect_count").arg(dbName);
+	QString attrName = QString("%1.max_connection_count").arg(dbName);
 	return getInt(attrName, 5);
 }
 

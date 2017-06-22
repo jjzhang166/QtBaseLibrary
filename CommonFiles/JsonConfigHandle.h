@@ -16,7 +16,7 @@ class JsonConfigHandlePrivate;
 class JsonConfigHandle
 {
 public:
-	JsonConfigHandle(const QString & jstrFilePath);
+	JsonConfigHandle(const QString & strFilePath);
 	~JsonConfigHandle();
 
 public:

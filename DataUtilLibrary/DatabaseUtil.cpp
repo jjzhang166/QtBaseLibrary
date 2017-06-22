@@ -3,6 +3,14 @@
 #include "DatabaseUtil.h"
 #include "DBConnectionPoolManger.h"
 
+
+bool DataBaseUtil::initDBConfig(const QString & filePath)
+{
+	SysConfig * pDBConfig = SingletonHelper<SysConfig>::getInstance();
+	pDBConfig->init(filePath);
+	return pDBConfig->isIntit();
+}
+
 int DataBaseUtil::insert(const DBUtilArguments & args)
 {
 	int id = -1;

@@ -14,6 +14,9 @@ class SingletonHelper
 public:
 	static T * getInstance();
 
+	SingletonHelper(const SingletonHelper &other);
+	SingletonHelper<T>& operator=(const SingletonHelper &other);
+
 private:
 	static QMutex mutex;
 	static QScopedPointer<T> instance;

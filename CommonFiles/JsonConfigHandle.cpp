@@ -124,8 +124,9 @@ void JsonConfigHandlePrivate::saveFile(QJsonDocument::JsonFormat format) const
 
 
 //==================================================================================================
-JsonConfigHandle::JsonConfigHandle(const QString & jstrFilePath)
+JsonConfigHandle::JsonConfigHandle(const QString & strFilePath)
 {
+	d_ptr = new JsonConfigHandlePrivate(strFilePath);
 }
 
 
