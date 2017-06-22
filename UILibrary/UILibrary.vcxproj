@@ -47,6 +47,7 @@
       <PrecompiledHeader>Use</PrecompiledHeader>
       <PrecompiledHeaderFile>stdafx.h</PrecompiledHeaderFile>
       <PrecompiledHeaderOutputFile>$(IntDir)$(TargetName).pch</PrecompiledHeaderOutputFile>
+      <DisableSpecificWarnings>4819</DisableSpecificWarnings>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -66,6 +67,7 @@
       <PrecompiledHeader>Use</PrecompiledHeader>
       <PrecompiledHeaderFile>stdafx.h</PrecompiledHeaderFile>
       <PrecompiledHeaderOutputFile>$(IntDir)$(TargetName).pch</PrecompiledHeaderOutputFile>
+      <DisableSpecificWarnings>4819</DisableSpecificWarnings>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -76,6 +78,10 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="..\CommonFiles\stdafx.cpp">
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Create</PrecompiledHeader>
+    </ClCompile>
     <ClCompile Include="AppFontIcon.cpp" />
     <ClCompile Include="AppFunctions.cpp" />
     <ClCompile Include="AppHelper.cpp" />
@@ -131,10 +137,6 @@
     </ClCompile>
     <ClCompile Include="MessageBox.cpp" />
     <ClCompile Include="PushButton.cpp" />
-    <ClCompile Include="stdafx.cpp">
-      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
-      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Create</PrecompiledHeader>
-    </ClCompile>
     <ClCompile Include="TitleBar.cpp" />
     <ClCompile Include="ToolButton.cpp" />
   </ItemGroup>
@@ -180,6 +182,7 @@
       <Command Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">"$(QTDIR)\bin\moc.exe"  "%(FullPath)" -o ".\GeneratedFiles\$(ConfigurationName)\moc_%(Filename).cpp"  -DUNICODE -DWIN32 -DWIN64 -DQT_DLL -DQT_NO_DEBUG -DNDEBUG -DQT_CORE_LIB -DQT_GUI_LIB -DQT_WIDGETS_LIB -DUILIBRARY_LIB -DEXPORT_UILIBRARY_LIB -D_WINDLL  "-I.\GeneratedFiles" "-I." "-I$(QTDIR)\include" "-I.\GeneratedFiles\$(ConfigurationName)\." "-I$(QTDIR)\include\QtCore" "-I$(QTDIR)\include\QtGui" "-I$(QTDIR)\include\QtWidgets" "-I$(SolutionDir)\CommonFiles" "-I$(SolutionDir)\Include\$(ProjectName)\." "-fstdafx.h" "-f../../AppFontIcon.h"</Command>
     </CustomBuild>
     <ClInclude Include="..\CommonFiles\AppAssiant.h" />
+    <ClInclude Include="..\CommonFiles\stdafx.h" />
     <ClInclude Include="..\Include\UILibrary\AppFunctions.h" />
     <ClInclude Include="..\Include\UILibrary\AppGlobal.h" />
     <ClInclude Include="..\Include\UILibrary\AppHelper.h" />
@@ -217,7 +220,6 @@
     <ClInclude Include="GeneratedFiles\ui_MessageBox.h" />
     <ClInclude Include="GeneratedFiles\ui_TitleBar.h" />
     <ClInclude Include="resource.h" />
-    <ClInclude Include="stdafx.h" />
   </ItemGroup>
   <ItemGroup>
     <CustomBuild Include="MessageBox.ui">

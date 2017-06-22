@@ -10,15 +10,15 @@
 class QWidget;
 class QAbstractButton;
 
-//×¢²áº¯Êı
+//æ³¨å†Œå‡½æ•°
 //==================================================================================================
-//×¢²á×ÖÌå
+//æ³¨å†Œå­—ä½“
 UILIBRARY_EXPORT void regCustomFont(const QString & path);
 
-//×¢²á°´Å¥£¬ Ê¹°´Å¥¿ÉÊ¹ÓÃ×Ô¶¨ÒåÍ¼±ê×ÖÌå£¨¶¨Òå°´Å¥Í¼±êÊ¹ÓÃButtonFontIconÀà
+//æ³¨å†ŒæŒ‰é’®ï¼Œ ä½¿æŒ‰é’®å¯ä½¿ç”¨è‡ªå®šä¹‰å›¾æ ‡å­—ä½“ï¼ˆå®šä¹‰æŒ‰é’®å›¾æ ‡ä½¿ç”¨ButtonFontIconç±»
 UILIBRARY_EXPORT void regButtonIcon(QAbstractButton * button, QWidget * parent);
 
-//×¢²á´°¿Úº¯Êı×Ô»æ±êÌâÀ¸
+//æ³¨å†Œçª—å£å‡½æ•°è‡ªç»˜æ ‡é¢˜æ 
 UILIBRARY_EXPORT void regWindowTitle(QWidget * widget, QAbstractButton * btnClose = NULL,
 	QAbstractButton * btnMin = NULL, QAbstractButton * btnMaxRestore = NULL, QWidget * title = NULL);
 
@@ -26,8 +26,8 @@ UILIBRARY_EXPORT void regWindowTitle(QWidget * widget, QAbstractButton * btnClos
 
 
 //==================================================================================================
-//ÉèÖÃ·­ÒëÎÄ¼ş
+//è®¾ç½®ç¿»è¯‘æ–‡ä»¶
 UILIBRARY_EXPORT void useChineseTrans(bool bUse = true);
 
-//ÉèÖÃÆ¤·ô[Í¨¹ıÍâ²¿¼ÓÔØ×ÊÔ´]
+//è®¾ç½®çš®è‚¤[é€šè¿‡å¤–éƒ¨åŠ è½½èµ„æº]
 UILIBRARY_EXPORT void setStyleSheet(const QString & Path, bool Append = false);

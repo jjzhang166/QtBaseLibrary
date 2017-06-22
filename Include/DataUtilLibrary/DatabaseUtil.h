@@ -1,4 +1,7 @@
 #pragma once
+
+#include "DataGlobal.h"
+
 #include <QMap>
 #include <QList>
 #include <QtSql>
@@ -45,7 +48,7 @@ struct DBUtilArguments
 	}
 };
 
-class DataBaseUtil {
+class DATAUTILLIBRARY_EXPORT DataBaseUtil {
 public:
 	/************************************************************************
 	*执行插入语句，并返回插入行的 id.

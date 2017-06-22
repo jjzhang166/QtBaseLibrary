@@ -25,3 +25,5 @@ Makefile
 /UILibrary/ipch/UILIBRARY-3312dddb
 /UILibrary/Debug/UILibrary.tlog
 /UILibrary/GeneratedFiles
+/TestLibs/Debug
+/TestLibs/GeneratedFiles

@@ -8,7 +8,7 @@
 
 //==================================================================================================
 class DBConnectionPool;
-class DBConnectionPoolManger
+class DATAUTILLIBRARY_EXPORT DBConnectionPoolManger
 {
 	SINGLETONHELPER(DBConnectionPoolManger);
 

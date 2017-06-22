@@ -32,44 +32,29 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="DataUtilLibrary.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="DB\DBConnectionPool.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="..\CommonFiles\SysConfig.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="..\CommonFiles\JsonConfigHandle.cpp">
       <Filter>CommonFiles</Filter>
     </ClCompile>
     <ClCompile Include="..\CommonFiles\stdafx.cpp">
       <Filter>CommonFiles</Filter>
     </ClCompile>
-    <ClCompile Include="DB\DBConnectionPoolManger.cpp">
-      <Filter>Source Files</Filter>
+    <ClCompile Include="..\CommonFiles\SysConfig.cpp">
+      <Filter>CommonFiles</Filter>
     </ClCompile>
     <ClCompile Include="DB\DatabaseUtil.cpp">
-      <Filter>Source Files</Filter>
+      <Filter>Source Files\DB</Filter>
+    </ClCompile>
+    <ClCompile Include="DataUtilLibrary.cpp">
+      <Filter>Source Files\DB</Filter>
+    </ClCompile>
+    <ClCompile Include="DB\DBConnectionPool.cpp">
+      <Filter>Source Files\DB</Filter>
+    </ClCompile>
+    <ClCompile Include="DB\DBConnectionPoolManger.cpp">
+      <Filter>Source Files\DB</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="DataUtilLibrary.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="DataGlobal.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="DB\DBConnectionPool.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="..\CommonFiles\SysConfig.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="..\CommonFiles\SingletonHelper.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="..\CommonFiles\JsonConfigHandle.h">
       <Filter>CommonFiles</Filter>
     </ClInclude>
@@ -79,10 +64,25 @@
     <ClInclude Include="..\CommonFiles\stdafx.h">
       <Filter>CommonFiles</Filter>
     </ClInclude>
-    <ClInclude Include="DB\DBConnectionPoolManger.h">
+    <ClInclude Include="..\CommonFiles\SysConfig.h">
+      <Filter>CommonFiles</Filter>
+    </ClInclude>
+    <ClInclude Include="..\CommonFiles\SingletonHelper.h">
+      <Filter>CommonFiles</Filter>
+    </ClInclude>
+    <ClInclude Include="DB\DBConnectionPool.h">
+      <Filter>Source Files\DB</Filter>
+    </ClInclude>
+    <ClInclude Include="DataUtilLibrary.h">
+      <Filter>Source Files\DB</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Include\DataUtilLibrary\DatabaseUtil.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="DB\DatabaseUtil.h">
+    <ClInclude Include="..\Include\DataUtilLibrary\DBConnectionPoolManger.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Include\DataUtilLibrary\DataGlobal.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

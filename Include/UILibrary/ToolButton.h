@@ -16,7 +16,7 @@ public:
 	~ToolButton();
 
 public:
-	//使用字体库来设置按钮图标
+	//浣跨敤瀛椾綋搴撴潵璁剧疆鎸夐挳鍥炬爣
 	QFont iconFont();
 	void setIconFont(const QFont & font);
 

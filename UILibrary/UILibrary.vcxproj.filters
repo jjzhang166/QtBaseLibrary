@@ -39,11 +39,11 @@
       <Extensions>ts</Extensions>
       <ParseFiles>false</ParseFiles>
     </Filter>
+    <Filter Include="CommonFiles">
+      <UniqueIdentifier>{7c2c8075-ec0b-4818-a001-1fdb599d1805}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="stdafx.cpp">
-      <Filter>Source</Filter>
-    </ClCompile>
     <ClCompile Include="AppHelper.cpp">
       <Filter>Source</Filter>
     </ClCompile>
@@ -116,11 +116,11 @@
     <ClCompile Include="GeneratedFiles\Release\moc_ToolButton.cpp">
       <Filter>Generated Files\Release</Filter>
     </ClCompile>
+    <ClCompile Include="..\CommonFiles\stdafx.cpp">
+      <Filter>CommonFiles</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="stdafx.h">
-      <Filter>Include</Filter>
-    </ClInclude>
     <ClInclude Include="GeneratedFiles\ui_MessageBox.h">
       <Filter>Generated Files</Filter>
     </ClInclude>
@@ -142,8 +142,11 @@
     <ClInclude Include="..\Include\UILibrary\AppStruct.h">
       <Filter>Include</Filter>
     </ClInclude>
+    <ClInclude Include="..\CommonFiles\stdafx.h">
+      <Filter>CommonFiles</Filter>
+    </ClInclude>
     <ClInclude Include="..\CommonFiles\AppAssiant.h">
-      <Filter>Include</Filter>
+      <Filter>CommonFiles</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
