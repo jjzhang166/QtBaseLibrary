@@ -92,7 +92,23 @@ QStringList DataBaseUtil::selectStrings(const DBUtilArguments & args)
 
 QVariantMap DataBaseUtil::selectMap(const DBUtilArguments & args)
 {
-	return selectMaps(args).value(0);
+	QVariantMap map;
+	
+	executeSql(args, [&map](QSqlQuery *query)
+	{
+		QStringList fieldNames = getFieldNames(*query);
+		while (query->next())
+		{
+			foreach(const QString &fieldName, fieldNames)
+			{
+				map.insert(fieldName, query->value(fieldName));
+			}
+
+			break;
+		}
+	});
+
+	return map;
 }
 
 QList<QVariantMap> DataBaseUtil::selectMaps(const DBUtilArguments & args)
@@ -101,11 +117,26 @@ QList<QVariantMap> DataBaseUtil::selectMaps(const DBUtilArguments & args)
 
 	executeSql(args, [&maps](QSqlQuery *query) 
 	{
-		maps = queryToMaps(query);
+		queryToMaps(query, maps);
 	});
 
 	return maps;
 }
+
+
+QRecord DataBaseUtil::selectRecord(const DBUtilArguments & args)
+{
+	QRecord record;
+
+	executeSql(args, [&record](QSqlQuery * query)
+	{
+		queryToRecords(query, record);
+	});
+
+	return record;
+}
+
+
 
 void DataBaseUtil::bindValues(QSqlQuery *query, const QVariantMap &params) 
 {
@@ -129,9 +160,8 @@ QStringList DataBaseUtil::getFieldNames(const QSqlQuery &query)
 	return names;
 }
 
-QList<QVariantMap > DataBaseUtil::queryToMaps(QSqlQuery *query) 
+ void DataBaseUtil::queryToMaps(QSqlQuery *query, QList<QVariantMap> & maps)
 {
-	QList<QVariantMap > rowMaps;
 	QStringList fieldNames = getFieldNames(*query);
 
 	while (query->next()) 
@@ -143,10 +173,39 @@ QList<QVariantMap > DataBaseUtil::queryToMaps(QSqlQuery *query)
 			rowMap.insert(fieldName, query->value(fieldName));
 		}
 
-		rowMaps.append(rowMap);
+		maps.append(rowMap);
+	}
+}
+
+void DataBaseUtil::queryToRecords(QSqlQuery *query, QRecord & record)
+{
+	QStringList fieldNames = getFieldNames(*query);
+
+	//首先初始化表头
+	record.clear();
+	const QSqlRecord & fields = query->record();
+	int colCount = fields.count();
+	for (int col = 0; col < colCount; ++col)
+	{
+		const QSqlField & field = fields.field(col);
+
+		ColumnInfo info;
+		info.Name = field.name();
+		info.Type = field.type();
+		info.Length = field.length();
+		record.addCol(info);
 	}
 
-	return rowMaps;
+	//加载数据
+	while (query->next())
+	{
+		QVariantList rowData;
+		for(int col = 0; col < colCount; ++col)
+		{
+			rowData.append(query->value(col));
+		}
+		record.addRow(rowData);
+	}
 }
 
 void DataBaseUtil::debug(const QSqlQuery &query, const QVariantMap &params) 
@@ -178,7 +237,8 @@ void DataBaseUtil::executeSql(const DBUtilArguments & args, std::function<void(Q
 		query.prepare(args.strSQL);
 		bindValues(&query, args.mapParams);
 
-		if (query.exec()) {
+		if (query.exec()) 
+		{
 			handleResult(&query);
 		}
 

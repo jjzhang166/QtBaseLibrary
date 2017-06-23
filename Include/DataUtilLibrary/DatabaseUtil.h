@@ -1,5 +1,6 @@
 #pragma once
 
+#include "Record.h"
 #include "DataGlobal.h"
 
 #include <QMap>
@@ -134,6 +135,13 @@ public:
 
 
 	/************************************************************************
+	* 执行查询语句，查询到多个结果并封装成 QRecord.
+	* @return 返回 QRecord，如果没有查找到，返回空的 QRecord.
+	*************************************************************************/
+	static QRecord selectRecord(const DBUtilArguments & args);
+
+
+	/************************************************************************
 	* 查询结果封装成一个对象 bean.
 	* @param mapToBean - 把 map 映射成对象的函数.
 	* @return 返回查找到的 bean, 如果没有查找到，返回 T 的默认对象，其 id 最好是 -1，这样便于有效的对象区别。
@@ -165,7 +173,6 @@ public:
 		return beans;
 	}
 
-
 private:
 	/************************************************************************
 	* 定义了访问数据库算法的骨架，SQL 语句执行的结果使用传进来的 Lambda 表达式处理
@@ -193,9 +200,17 @@ private:
 	/************************************************************************
 	* 把 query 中的查询得到的所有行映射为 map 的 list.
 	* @param query
-	* @return 返回 key 为列名，值为列的值的 map 的 list.
+	* @maps 返回 key 为列名，值为列的值的 map 的 list.
 	*************************************************************************/
-	static QList<QVariantMap> queryToMaps(QSqlQuery *query);
+	static void queryToMaps(QSqlQuery *query, QList<QVariantMap> & maps);
+
+
+	/************************************************************************
+	* 把 query 中的查询得到的所有行映射为 QRecord.
+	* @param query
+	* @record 返回
+	*************************************************************************/
+	static void queryToRecords(QSqlQuery *query, QRecord & record);
 
 
 	/************************************************************************
