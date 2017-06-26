@@ -14,6 +14,10 @@
       <Extensions>qrc;*</Extensions>
       <ParseFiles>false</ParseFiles>
     </Filter>
+    <Filter Include="Form Files">
+      <UniqueIdentifier>{99349809-55BA-4b9d-BF79-8FDBB0286EB3}</UniqueIdentifier>
+      <Extensions>ui</Extensions>
+    </Filter>
     <Filter Include="Resource Files">
       <UniqueIdentifier>{D9D6E242-F8AF-46E4-B9FD-80ECBC20BA3E}</UniqueIdentifier>
       <Extensions>qrc;*</Extensions>
@@ -24,21 +28,39 @@
       <Extensions>moc;h;cpp</Extensions>
       <SourceControlFiles>False</SourceControlFiles>
     </Filter>
-    <Filter Include="CommonFiles">
-      <UniqueIdentifier>{442b9636-f043-470b-8202-a048c3aad677}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Generated Files\Debug">
-      <UniqueIdentifier>{fb78ed94-6c98-48d6-929d-3ac659e69fdb}</UniqueIdentifier>
+      <UniqueIdentifier>{3c44e260-e209-4f94-b95d-f9eea81b46cc}</UniqueIdentifier>
       <Extensions>cpp;moc</Extensions>
       <SourceControlFiles>False</SourceControlFiles>
     </Filter>
     <Filter Include="Generated Files\Release">
-      <UniqueIdentifier>{1e40520e-fe78-4b08-9742-d94a1a1efff2}</UniqueIdentifier>
+      <UniqueIdentifier>{22f66038-1273-44e3-9d12-d641e82574d6}</UniqueIdentifier>
       <Extensions>cpp;moc</Extensions>
       <SourceControlFiles>False</SourceControlFiles>
     </Filter>
+    <Filter Include="CommonFiles">
+      <UniqueIdentifier>{8d0fd811-295b-428c-b8a3-3fc10243621c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Import">
+      <UniqueIdentifier>{18d99e83-5196-46ca-a5a4-6a3874421c69}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="main.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="TestLibs.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="GeneratedFiles\Debug\moc_TestLibs.cpp">
+      <Filter>Generated Files\Debug</Filter>
+    </ClCompile>
+    <ClCompile Include="GeneratedFiles\Release\moc_TestLibs.cpp">
+      <Filter>Generated Files\Release</Filter>
+    </ClCompile>
+    <ClCompile Include="GeneratedFiles\qrc_TestLibs.cpp">
+      <Filter>Generated Files</Filter>
+    </ClCompile>
     <ClCompile Include="..\CommonFiles\JsonConfigHandle.cpp">
       <Filter>CommonFiles</Filter>
     </ClCompile>
@@ -47,15 +69,6 @@
     </ClCompile>
     <ClCompile Include="..\CommonFiles\SysConfig.cpp">
       <Filter>CommonFiles</Filter>
-    </ClCompile>
-    <ClCompile Include="DatabaseUtil.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="DBConnectionPool.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="DBConnectionPoolManger.cpp">
-      <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="..\CommonFiles\Record.cpp">
       <Filter>CommonFiles</Filter>
@@ -84,30 +97,18 @@
     <ClCompile Include="GeneratedFiles\Release\moc_RecordTableModel.cpp">
       <Filter>Generated Files\Release</Filter>
     </ClCompile>
-    <ClCompile Include="..\CommonFiles\RecordTree.cpp">
-      <Filter>CommonFiles</Filter>
-    </ClCompile>
-    <ClCompile Include="GeneratedFiles\Debug\moc_RecordTree.cpp">
-      <Filter>Generated Files\Debug</Filter>
-    </ClCompile>
-    <ClCompile Include="GeneratedFiles\Release\moc_RecordTree.cpp">
-      <Filter>Generated Files\Release</Filter>
-    </ClCompile>
-    <ClCompile Include="..\CommonFiles\RecordTreeModel.cpp">
-      <Filter>CommonFiles</Filter>
-    </ClCompile>
-    <ClCompile Include="GeneratedFiles\Debug\moc_RecordTreeModel.cpp">
-      <Filter>Generated Files\Debug</Filter>
-    </ClCompile>
-    <ClCompile Include="GeneratedFiles\Release\moc_RecordTreeModel.cpp">
-      <Filter>Generated Files\Release</Filter>
-    </ClCompile>
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="GeneratedFiles\ui_TestLibs.h">
+      <Filter>Generated Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\CommonFiles\AppAssiant.h">
+      <Filter>CommonFiles</Filter>
+    </ClInclude>
     <ClInclude Include="..\CommonFiles\JsonConfigHandle.h">
       <Filter>CommonFiles</Filter>
     </ClInclude>
-    <ClInclude Include="..\CommonFiles\AppAssiant.h">
+    <ClInclude Include="..\CommonFiles\SingletonHelper.h">
       <Filter>CommonFiles</Filter>
     </ClInclude>
     <ClInclude Include="..\CommonFiles\stdafx.h">
@@ -116,26 +117,23 @@
     <ClInclude Include="..\CommonFiles\SysConfig.h">
       <Filter>CommonFiles</Filter>
     </ClInclude>
-    <ClInclude Include="..\CommonFiles\SingletonHelper.h">
-      <Filter>CommonFiles</Filter>
+    <ClInclude Include="..\Include\ImportDataUtilLibrary.h">
+      <Filter>Import</Filter>
     </ClInclude>
-    <ClInclude Include="..\Include\DataUtilLibrary\DatabaseUtil.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="..\Include\DataUtilLibrary\DBConnectionPoolManger.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="..\Include\DataUtilLibrary\DataGlobal.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="DBConnectionPool.h">
-      <Filter>Source Files</Filter>
-    </ClInclude>
-    <ClInclude Include="..\CommonFiles\BaseStruct.h">
-      <Filter>CommonFiles</Filter>
+    <ClInclude Include="..\Include\ImportUILibrary.h">
+      <Filter>Import</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
+    <CustomBuild Include="TestLibs.h">
+      <Filter>Header Files</Filter>
+    </CustomBuild>
+    <CustomBuild Include="TestLibs.ui">
+      <Filter>Form Files</Filter>
+    </CustomBuild>
+    <CustomBuild Include="TestLibs.qrc">
+      <Filter>Resource Files</Filter>
+    </CustomBuild>
     <CustomBuild Include="..\CommonFiles\Record.h">
       <Filter>CommonFiles</Filter>
     </CustomBuild>
@@ -145,11 +143,8 @@
     <CustomBuild Include="..\CommonFiles\RecordTableModel.h">
       <Filter>CommonFiles</Filter>
     </CustomBuild>
-    <CustomBuild Include="..\CommonFiles\RecordTree.h">
-      <Filter>CommonFiles</Filter>
-    </CustomBuild>
-    <CustomBuild Include="..\CommonFiles\RecordTreeModel.h">
-      <Filter>CommonFiles</Filter>
-    </CustomBuild>
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="TestLibs.rc" />
   </ItemGroup>
 </Project>

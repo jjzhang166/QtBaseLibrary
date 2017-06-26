@@ -96,7 +96,7 @@ QSqlDatabase DBConnectionPoolPrivate::getConnection()
 		usedConnectionNames.push(connectionName);
 		mutex.unlock();
 
-		QSqlDatabase db = createConnection(connectionName);
+		QSqlDatabase db = getConnection(connectionName);
 		if (!db.isOpen())
 		{
 			mutex.lock();

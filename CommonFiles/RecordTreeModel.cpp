@@ -15,19 +15,9 @@ QRecordTreeModel::~QRecordTreeModel( )
 
 }
 
-bool QRecordTreeModel::select(const QString & SQL)
+void QRecordTreeModel::setRecord(const QRecord & record)
 {
-	QString Error;
-	return select(SQL, Error);
-}
-
-bool QRecordTreeModel::select(const QString & SQL, QString & Error)
-{
-	bool caller = dsRecords.select(SQL, Error);
-	if (!caller) return caller;
-	dsRecords.reCreateIndexOnID();
-	dsRecords.reCreateIndexOnPID();
-	return caller;
+	dsRecords = record;
 }
 
 void QRecordTreeModel::setRoot(const QVariant & identify)

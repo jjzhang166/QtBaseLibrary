@@ -21,11 +21,9 @@ public:
 	~QRecordTreeModel( );
 
 public:
-	bool select(const QString & SQL);
-	bool select(const QString & SQL, QString & Error);
-
+	
 	void refresh(void);
-
+	void setRecord(const QRecord & record);
 	//设置根节点的 ID，默认为 0, 列从0开始。 先设置根节点和列。
 	void setRoot( const QVariant & identify = 0 );
 	void setFieldCol(const QString & id, const QString & pid);

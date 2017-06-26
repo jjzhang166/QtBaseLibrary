@@ -13,6 +13,28 @@ QRecordTree::~QRecordTree()
 }
 
 /***********************************************************************************************************************************/
+QRecordTree & QRecordTree::operator= (const QRecord & other)
+{
+	clear();
+	mapIndexes = other.mapIndexes;
+	listColumns = other.listColumns;
+	listRows = other.listRows;
+	return *this;
+}
+
+QRecordTree & QRecordTree::operator= (const QRecordTree & other)
+{
+	clear();
+	mapIndexes = other.mapIndexes;
+	listColumns = other.listColumns;
+	listRows = other.listRows;
+	listShowCols = other.listShowCols;
+	ID = other.ID;
+	PID = other.PID;
+	return *this;
+}
+
+/***********************************************************************************************************************************/
 void QRecordTree::setIndexFiled(short id, short pid)
 {
 	if (this->ID != id)

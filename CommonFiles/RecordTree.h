@@ -12,6 +12,10 @@ public:
 	~QRecordTree();
 
 public:
+	QRecordTree & operator= (const QRecord & other);
+	QRecordTree & operator= (const QRecordTree & other);
+
+public:
 	void setIndexFiled(short id, short pid);
 
 	void reCreateIndexOnID();
