@@ -152,6 +152,7 @@ void DBConnectionPoolPrivate::releaseConnection(const QSqlDatabase &connection)
 		mutex.unlock();
 
 		pSemaphore->release();
+
 	}
 }
 

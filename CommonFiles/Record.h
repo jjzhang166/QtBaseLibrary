@@ -77,6 +77,9 @@ public:
 	int getNotFetchRow(const QString & name, const QVariant & value, int start = 0) const;
 
 protected:
+	bool compareColumns(const QList<ColumnInfo> & newColumns);
+
+protected:
 	friend class QRecordTree;
 	friend class QRecordTable;
 

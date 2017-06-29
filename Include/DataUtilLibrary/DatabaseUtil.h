@@ -67,9 +67,9 @@ public:
 
 	/************************************************************************
 	* 执行更新语句 (update 和 delete 语句都是更新语句).
-	* @return 如没有错误返回 true， 有错误返回 false.
+	* @return 如没有错误返回更新的记录的条数， 有错误返回 -1.
 	*************************************************************************/
-	static bool update(const DBUtilArguments & args);
+	static int update(const DBUtilArguments & args);
 
 	/************************************************************************
 	* 执行查询语句，查询到一条记录，并把其映射成 map: key 是列名，value 是列值.
@@ -139,6 +139,9 @@ public:
 	* @return 返回 QRecord，如果没有查找到，返回空的 QRecord.
 	*************************************************************************/
 	static QRecord selectRecord(const DBUtilArguments & args);
+
+
+	static QSqlQuery selectQuery(const DBUtilArguments & args);
 
 
 	/************************************************************************
@@ -217,6 +220,6 @@ private:
 	* 如果 app.ini 里 output_sql 为 true，则输出执行的 SQL，如果为 false，则不输出.
 	* @param query
 	*************************************************************************/
-	static void debug(const QSqlQuery &query, const QVariantMap &params);
+	static void debug(const QSqlDatabase &db, const QSqlQuery &query, const QVariantMap &params);
 
 };

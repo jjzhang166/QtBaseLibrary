@@ -9,25 +9,36 @@ QRecordTable::QRecordTable(QObject *parent)
 
 QRecordTable::~QRecordTable()
 {
-
+	clear();
 }
 
 QRecordTable & QRecordTable::operator= (const QRecord & other)
 {
-	clear();
+	wipeData();
 	mapIndexes = other.mapIndexes;
-	listColumns = other.listColumns;
 	listRows = other.listRows;
+
+	if (!compareColumns(other.listColumns))
+	{
+		listColumns = other.listColumns;
+		listShowCols.clear();
+	}
+
 	return *this;
 }
 
 QRecordTable & QRecordTable::operator= (const QRecordTable & other)
 {
-	clear();
+	wipeData();
 	mapIndexes = other.mapIndexes;
-	listColumns = other.listColumns;
 	listRows = other.listRows;
-	listShowCols = other.listShowCols;
+
+	if (!compareColumns(other.listColumns))
+	{
+		listColumns = other.listColumns;
+		listShowCols = other.listShowCols;
+	}
+
 	return *this;
 }
 

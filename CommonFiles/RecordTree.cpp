@@ -9,28 +9,39 @@ QRecordTree::QRecordTree(QObject *parent)
 
 QRecordTree::~QRecordTree()
 {
-
+	clear();
 }
 
 /***********************************************************************************************************************************/
 QRecordTree & QRecordTree::operator= (const QRecord & other)
 {
-	clear();
+	wipeData();
 	mapIndexes = other.mapIndexes;
-	listColumns = other.listColumns;
 	listRows = other.listRows;
+
+	if (!compareColumns(other.listColumns))
+	{
+		listColumns = other.listColumns;
+		listShowCols.clear();
+	}
+
 	return *this;
 }
 
 QRecordTree & QRecordTree::operator= (const QRecordTree & other)
 {
-	clear();
+	wipeData();
 	mapIndexes = other.mapIndexes;
-	listColumns = other.listColumns;
 	listRows = other.listRows;
-	listShowCols = other.listShowCols;
-	ID = other.ID;
-	PID = other.PID;
+
+	if (!compareColumns(other.listColumns))
+	{
+		listColumns = other.listColumns;
+		listShowCols = other.listShowCols;
+		ID = other.ID;
+		PID = other.PID;
+	}
+
 	return *this;
 }
 

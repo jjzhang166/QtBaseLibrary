@@ -24,10 +24,15 @@ QRecord::~QRecord()
 
 QRecord & QRecord::operator=(const QRecord & other)
 {
-	clear();
+	wipeData();
 	mapIndexes = other.mapIndexes;
-	listColumns = other.listColumns;
 	listRows = other.listRows;
+
+	if (!compareColumns(other.listColumns))
+	{
+		listColumns = other.listColumns;
+	}
+
 	return *this;
 }
 
@@ -329,4 +334,18 @@ int QRecord::getNotFetchRow(const QString & name, const QVariant & value, int st
 {
 	short col = getCol(name);
 	return getNotFetchRow(col, value, start);
+}
+
+
+bool QRecord::compareColumns(const QList<ColumnInfo> & newColumns)
+{
+	if (this->listColumns.count() != newColumns.count())
+		return false;
+
+	for (int col = 0; col < listColumns.count(); ++col)
+	{
+		if (listColumns.at(col).Name.compare(newColumns.at(col).Name, Qt::CaseInsensitive) != 0)
+			return false;
+	}
+	return true;	
 }

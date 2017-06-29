@@ -77,6 +77,12 @@ void useChineseTrans(bool bUse)
 	}
 }
 
+void setAppTransFile(const QString Path)
+{
+	static QScopedPointer<QTranslator> translator(new QTranslator());
+	translator->load(Path);
+	qApp->installTranslator(translator.data());
+}
 
 void setStyleSheet(const QString & Path, bool Append)
 {

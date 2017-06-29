@@ -5,6 +5,7 @@
 
 #include <QStyle>
 #include <QWidget>
+#include <QVariantList>
 #include <QMessageBox>
 
 //==================================================================================================
@@ -164,3 +165,14 @@ QString getRGBColor(const QColor & color)
 }
 
 //==================================================================================================
+QString listToString(const QVariantList & list, const QString & spilt)
+{
+	QString strCondition;
+	for (int i = 0; i < list.count() - 1; ++i)
+	{
+		strCondition += list.at(i).toString() + spilt;
+	}
+
+	strCondition += list.last().toString();
+	return strCondition;
+}

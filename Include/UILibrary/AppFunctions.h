@@ -39,3 +39,5 @@ UILIBRARY_EXPORT QString getRGBColor(const QColor & color);
 
 
 //==================================================================================================
+//将QList， QVector 转为 通过分隔符分割的QString
+UILIBRARY_EXPORT QString listToString(const QVariantList & list, const QString & spilt);

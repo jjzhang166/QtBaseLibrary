@@ -97,6 +97,15 @@
     <ClCompile Include="GeneratedFiles\Release\moc_RecordTableModel.cpp">
       <Filter>Generated Files\Release</Filter>
     </ClCompile>
+    <ClCompile Include="..\CommonFiles\DBTableModel.cpp">
+      <Filter>CommonFiles</Filter>
+    </ClCompile>
+    <ClCompile Include="GeneratedFiles\Debug\moc_DBTableModel.cpp">
+      <Filter>Generated Files\Debug</Filter>
+    </ClCompile>
+    <ClCompile Include="GeneratedFiles\Release\moc_DBTableModel.cpp">
+      <Filter>Generated Files\Release</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="GeneratedFiles\ui_TestLibs.h">
@@ -141,6 +150,9 @@
       <Filter>CommonFiles</Filter>
     </CustomBuild>
     <CustomBuild Include="..\CommonFiles\RecordTableModel.h">
+      <Filter>CommonFiles</Filter>
+    </CustomBuild>
+    <CustomBuild Include="..\CommonFiles\DBTableModel.h">
       <Filter>CommonFiles</Filter>
     </CustomBuild>
   </ItemGroup>

@@ -6,9 +6,14 @@
 #include <QPushButton>
 #include <QtWidgets/QApplication>
 
+#include "DBTableModel.h"
 #include "RecordTableModel.h"
 #include "SysConfig.h"
 #include "ImportDataUtilLibrary.h"
+
+
+#include <QSqlQuery>
+
 
 int main(int argc, char *argv[])
 {
@@ -46,8 +51,10 @@ int main(int argc, char *argv[])
 	trans.addRow(r4);
 	trans.addRow(r5);
 
+	
 
-	QTableView view;
+
+	
 
 	QRecordTableModel model;
 	model.setRecord(rd);
@@ -58,13 +65,39 @@ int main(int argc, char *argv[])
 		model.setCol(col, CF_SHOW);
 	}
 	
-	view.setModel(&model);
-
-	view.show();
 	*/
 
+	QTableView view;
+
+
+	QDBTableModel model;
+
 	DBUtilArguments dbArg;
-	dbArg.strSQL = "select top 40000 * FROM defects";
+	dbArg.strSQL = "select top 40 * FROM defects";
+	
+	model.setQuery(DataBaseUtil::selectQuery(dbArg));
+	model.select();
+
+	model.setCol(2, "Hi");
+	model.setCol(4, "Hello");
+
+	view.setModel(&model);
+	view.show();
+
+	const QSqlDatabase & db = SingletonHelper<DBConnectionPoolManger>::getInstance()->getConnection();
+	//const QSqlDatabase & db1 = SingletonHelper<DBConnectionPoolManger>::getInstance()->getConnection();
+	QSqlTableModel mode2(NULL, db);
+	mode2.setTable("defects");
+	mode2.select();
+	
+	QTableView view2;
+	view2.setModel(&mode2);
+	view2.move(100, 100);
+	view2.show();
+	
+	/*
+	DBUtilArguments dbArg;
+	dbArg.strSQL = "select top 400 * FROM defects";
 
 	QTime time;
 	time.start();
@@ -76,9 +109,11 @@ int main(int argc, char *argv[])
 	time1.start();
 	qDebug() << DataBaseUtil::selectMaps(dbArg);
 	qDebug() << endl << time1.elapsed() / 1000.0 << "s" << endl;
+
+
 	TestLibs w;
 	w.show();
 	
-
+	*/
 	return a.exec();
 }

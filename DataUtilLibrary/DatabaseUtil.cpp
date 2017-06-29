@@ -23,13 +23,13 @@ int DataBaseUtil::insert(const DBUtilArguments & args)
 	return id;
 }
 
-bool DataBaseUtil::update(const DBUtilArguments & args)
+int DataBaseUtil::update(const DBUtilArguments & args)
 {
-	bool result;
+	int result;
 
 	executeSql(args, [&result](QSqlQuery *query) 
 	{
-		result = query->lastError().type() == QSqlError::NoError;
+		result = (query->lastError().type() == QSqlError::NoError) ? query->numRowsAffected() : -1;
 	});
 
 	return result;
@@ -136,7 +136,16 @@ QRecord DataBaseUtil::selectRecord(const DBUtilArguments & args)
 	return record;
 }
 
+QSqlQuery DataBaseUtil::selectQuery(const DBUtilArguments & args)
+{
+	QSqlQuery sqlQuery;
+	executeSql(args, [&sqlQuery](QSqlQuery * query)
+	{
+		sqlQuery = *query;
+	});
 
+	return sqlQuery;
+}
 
 void DataBaseUtil::bindValues(QSqlQuery *query, const QVariantMap &params) 
 {
@@ -208,7 +217,7 @@ void DataBaseUtil::queryToRecords(QSqlQuery *query, QRecord & record)
 	}
 }
 
-void DataBaseUtil::debug(const QSqlQuery &query, const QVariantMap &params) 
+void DataBaseUtil::debug(const QSqlDatabase &db, const QSqlQuery &query, const QVariantMap &params)
 {
 	if (SingletonHelper<SysConfig>::getInstance()->isDBOutPutDebugSQL()) 
 	{
@@ -217,6 +226,7 @@ void DataBaseUtil::debug(const QSqlQuery &query, const QVariantMap &params)
 			qDebug() << "    => SQL Error: " << query.lastError().text().trimmed();
 		}
 
+		qDebug() << "Use DB Connection Name: " << db.connectionName();
 		qDebug() << "    => SQL Query:" << query.lastQuery();
 
 		if (params.size() > 0) 
@@ -242,7 +252,7 @@ void DataBaseUtil::executeSql(const DBUtilArguments & args, std::function<void(Q
 			handleResult(&query);
 		}
 
-		debug(query, args.mapParams);
+		debug(db, query, args.mapParams);
 		dbManger->releaseConnection(db, args.strDBName);
 	}
 

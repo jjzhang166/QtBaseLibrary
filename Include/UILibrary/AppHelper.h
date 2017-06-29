@@ -28,6 +28,8 @@ UILIBRARY_EXPORT void regWindowTitle(QWidget * widget, QAbstractButton * btnClos
 //==================================================================================================
 //设置翻译文件
 UILIBRARY_EXPORT void useChineseTrans(bool bUse = true);
+UILIBRARY_EXPORT void setAppTransFile(const QString Path);
+
 
 //设置皮肤[通过外部加载资源]
 UILIBRARY_EXPORT void setStyleSheet(const QString & Path, bool Append = false);
