@@ -29,3 +29,6 @@ Makefile
 /TestLibs/GeneratedFiles
 /QtBaseLibrary.VC.VC.opendb
 /QtBaseLibrary.VC.db
+/TestLibs/Release
+/UILibrary/Release/UILibrary.tlog
+/DataUtilLibrary/Release/DataUtilLibrary.tlog

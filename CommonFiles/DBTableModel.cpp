@@ -49,6 +49,18 @@ void QDBTableModel::setTransRecord(const QRecord & record)
 	dsTransRecord = record;
 }
 
+QVariant QDBTableModel::getItemData(int row, int col) const
+{
+	QModelIndex & index = createIndex(row, col);
+	return QSqlTableModel::data(index, Qt::DisplayRole);
+}
+
+QVariant QDBTableModel::getItemData(int row, const QString & colName) const
+{
+	int col = query().record().indexOf(colName);
+	return getItemData(row, col);
+}
+
 QVariant QDBTableModel::data(const QModelIndex &idx, int role ) const
 {
 	if (listShowCols.count() <= idx.column())
@@ -57,7 +69,14 @@ QVariant QDBTableModel::data(const QModelIndex &idx, int role ) const
 	//对应的实际的列值
 	int col = listShowCols.at(idx.column());
 	QModelIndex index = createIndex(idx.row(), col);
-	return QSqlTableModel::data(index, role);
+
+	const QVariant & result = QSqlTableModel::data(index, role);
+	if (role == Qt::DisplayRole)
+	{
+		return display(col, result);
+	}
+
+	return result;
 
 }
 
@@ -89,7 +108,7 @@ QVariant QDBTableModel::display(int col, const QVariant & value) const
 	//翻译使用。
 	if (dsTransRecord.rowCount() > 0 && dsTransRecord.colCount() == 3)
 	{
-		const QString & colName = dsRecords.getColName(col);
+		const QString & colName = query().record().fieldName(col);
 		QMap<int, QVariant> mapFind;
 		mapFind.insert(0, colName);
 		mapFind.insert(1, value);
