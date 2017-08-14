@@ -95,13 +95,13 @@ int main(int argc, char *argv[])
 	view2.move(100, 100);
 	view2.show();
 	
-	/*
-	DBUtilArguments dbArg;
-	dbArg.strSQL = "select top 400 * FROM defects";
+	
+	DBUtilArguments dbArg11;
+	dbArg11.strSQL = "select top 400 * FROM defects";
 
 	QTime time;
 	time.start();
-	QRecord rd = DataBaseUtil::selectRecord(dbArg);
+	QRecord rd = DataBaseUtil::selectRecord(dbArg11);
 	qDebug() << rd.getRows();
 
 	qDebug() << endl << time.elapsed() / 1000.0 << "s";
@@ -114,6 +114,6 @@ int main(int argc, char *argv[])
 	TestLibs w;
 	w.show();
 	
-	*/
+	
 	return a.exec();
 }

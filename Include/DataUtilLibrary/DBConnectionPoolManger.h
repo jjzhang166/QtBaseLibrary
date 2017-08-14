@@ -14,7 +14,6 @@ class DATAUTILLIBRARY_EXPORT DBConnectionPoolManger
 
 public:
 	QSqlDatabase getConnection(const QString configDBName = "db");
-	void releaseConnection(const QSqlDatabase &connection, const QString configDBName = "db");
 
 private:
 	QMap<QString, DBConnectionPool *> mapDBConnectionPool;

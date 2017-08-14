@@ -16,7 +16,6 @@ public:
 public:
 	void destory();
 	QSqlDatabase getConnection();
-	void releaseConnection(const QSqlDatabase &connection);
 
 private:
 	Q_DECLARE_PRIVATE(DBConnectionPool);

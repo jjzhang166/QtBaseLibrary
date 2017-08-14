@@ -146,6 +146,12 @@ bool SysConfig::isDBOutPutDebugSQL(const QString & dbName) const
 	return getBool(attrName, false);
 }
 
+bool SysConfig::isDBDefaultConnection(const QString & dbName) const
+{
+	QString attrName = QString("%1.default_connection").arg(dbName);
+	return getBool(attrName, false);
+}
+
 QStringList SysConfig::getDBSqlFiles(const QString & dbName) const
 {
 	QString attrName = QString("%1.sql_files").arg(dbName);

@@ -35,6 +35,23 @@ int DataBaseUtil::update(const DBUtilArguments & args)
 	return result;
 }
 
+bool DataBaseUtil::execSQL(const DBUtilArguments & args)
+{
+	bool result;
+
+	executeSql(args, [&result, &args](QSqlQuery *query)
+	{
+		result = (query->lastError().type() == QSqlError::NoError) ? true : false;
+
+		if (!result)
+		{
+			qDebug() << QString("Error: %1 \n SQL: %2 \n").arg(query->lastError().text()).arg(args.strSQL);
+		}
+	});
+
+	return result;
+}
+
 int DataBaseUtil::selectInt(const DBUtilArguments & args)
 {
 	return selectVariant(args).toInt();
@@ -253,7 +270,6 @@ void DataBaseUtil::executeSql(const DBUtilArguments & args, std::function<void(Q
 		}
 
 		debug(db, query, args.mapParams);
-		dbManger->releaseConnection(db, args.strDBName);
 	}
 
 }

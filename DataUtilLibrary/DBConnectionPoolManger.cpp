@@ -34,20 +34,3 @@ QSqlDatabase DBConnectionPoolManger::getConnection(const QString configDBName)
 	qDebug() << "DBConnectionPool is null";
 	return QSqlDatabase();
 }
-
-void DBConnectionPoolManger::releaseConnection(const QSqlDatabase &connection, const QString configDBName)
-{
-	if (mapDBConnectionPool.contains(configDBName))
-	{
-		DBConnectionPool * pConnectPool = mapDBConnectionPool.value(configDBName);
-		if (pConnectPool)
-		{
-			return pConnectPool->releaseConnection(connection);
-		}
-		qDebug() << "DBConnectionPool is null";
-	}
-	else
-	{
-		qDebug() << "Can not find DBconnectPool";
-	}
-}

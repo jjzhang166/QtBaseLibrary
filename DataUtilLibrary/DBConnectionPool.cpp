@@ -3,10 +3,12 @@
 #include "DBConnectionPool.h"
 
 #include <QDebug>
-#include <QStack>
+#include <QQueue>
 #include <QSqlError>
 #include <QSqlQuery>
 #include <QSemaphore>
+
+#include <QTime>
 
 
 //==================================================================================================
@@ -17,11 +19,10 @@ public:
 	~DBConnectionPoolPrivate();
 
 	QSqlDatabase getConnection();
-
 	void closeConnections();
-	void releaseConnection(const QSqlDatabase &connection);
 
 private:
+	void initConnections();
 	QSqlDatabase getConnection(const QString & connectionName);
 	QSqlDatabase createConnection(const QString & connectionName);
 
@@ -34,24 +35,22 @@ private:
 	QString strDBConnectionName;
 	int iPort;
 
+	bool bDefaultConnection;			//程序中的默认的数据库连接，设置多次会被后面的覆盖
 	bool bTestVaild;					//取得连接时验证连接是否有效（断线重连功能）
 	int iMaxWaitTime;					//获取连接最大等待时间
 	int iMaxConnectionCount;			//最大连接数
 	QString strTestSql;					//测试访问数据库使用的SQL
 
-	QSemaphore * pSemaphore;					//互斥信号量
-	QStack<QString> usedConnectionNames;		//已使用的连接	
-	QStack<QString> unUsedConnectionNames;		//未使用的连接
+	QQueue<QString> queueConnectionNames;		//存储数据库连接名的队列
 
 	QMutex mutex;
-	static int iLastKey;								//连接名称序号， 保证连接名字不重复
+	static int iLastKey;						//连接名称序号， 保证连接名字不重复
 };
 
 int DBConnectionPoolPrivate::iLastKey = 0;
 //==================================================================================================
 DBConnectionPoolPrivate::DBConnectionPoolPrivate(const QString & configDBName)
 {
-	pSemaphore = NULL;
 	iPort = 0;
 	iMaxWaitTime = 0;
 	iMaxConnectionCount = 0;
@@ -71,8 +70,13 @@ DBConnectionPoolPrivate::DBConnectionPoolPrivate(const QString & configDBName)
 		iMaxWaitTime = pConfig->getDBMaxWaitTime(configDBName);
 		iMaxConnectionCount = pConfig->getDBMaxConnectionCount(configDBName);
 		bTestVaild = pConfig->isDBTestOnConnect(configDBName);
+		bDefaultConnection = pConfig->isDBDefaultConnection(configDBName);
 
-		pSemaphore = new QSemaphore(iMaxConnectionCount);
+		//初始化连接；
+		QTime time;
+		time.start();
+		initConnections();
+		qDebug() << endl << "Init Use Time:"  << time.elapsed() / 1000.0 << "s";
 	}
 	
 }
@@ -80,79 +84,47 @@ DBConnectionPoolPrivate::DBConnectionPoolPrivate(const QString & configDBName)
 DBConnectionPoolPrivate::~DBConnectionPoolPrivate()
 {
 	closeConnections();
-	CHK_POINT_DESTORY(pSemaphore);
 }
 
 //==================================================================================================
 QSqlDatabase DBConnectionPoolPrivate::getConnection()
 {
-	if (pSemaphore && pSemaphore->tryAcquire(1, iMaxWaitTime))
+	while (queueConnectionNames.count() > 0)
 	{
 		//有回收的连接则使用新连接， 没有则新创建连接
 		mutex.lock();
-		QString connectionName = unUsedConnectionNames.size() > 0 ?
-			unUsedConnectionNames.pop() : QString("%1_%2").arg(strDBConnectionName).arg(iLastKey++);
-
-		usedConnectionNames.push(connectionName);
+		QString connectionName = queueConnectionNames.dequeue();
 		mutex.unlock();
 
-		QSqlDatabase db = getConnection(connectionName);
+		const QSqlDatabase & db = getConnection(connectionName);
 		if (!db.isOpen())
 		{
-			mutex.lock();
-			usedConnectionNames.removeOne(connectionName);
-			mutex.unlock();
-			pSemaphore->release();
+			qDebug() << "Failed to open DB. ConnectionName: " << connectionName;
 		}
+
+		mutex.lock();
+		queueConnectionNames.enqueue(connectionName);
+		mutex.unlock();
 
 		return db;
 	}
-	else
-	{
-		//创建连接超时， 返回一个无效连接
-		qDebug() << "Time out to get connection.";
-		return QSqlDatabase();
-	}
+
+	initConnections();
+	//创建连接超时， 返回一个无效连接
+	qDebug() << "Time out to get connection.";
+	return QSqlDatabase();
 }
 
 void DBConnectionPoolPrivate::closeConnections()
 {
-	while (unUsedConnectionNames.size() > 0)
+	while (queueConnectionNames.size() > 0)
 	{
 		mutex.lock();
-		QSqlDatabase db = QSqlDatabase::database(unUsedConnectionNames.pop());
+		QSqlDatabase db = QSqlDatabase::database(queueConnectionNames.dequeue());
 		mutex.unlock();
 
 		if (db.isOpen())
 			db.close();
-	}
-
-	while (usedConnectionNames.size() > 0)
-	{
-		mutex.lock();
-		QSqlDatabase db = QSqlDatabase::database(usedConnectionNames.pop());
-		mutex.unlock();
-
-		if (db.isOpen())
-			db.close();
-
-		pSemaphore->release();
-	}
-
-}
-
-void DBConnectionPoolPrivate::releaseConnection(const QSqlDatabase &connection)
-{
-	QString connectionName = connection.connectionName();
-	if (usedConnectionNames.contains(connectionName))
-	{
-		mutex.lock();
-		usedConnectionNames.removeOne(connectionName);
-		unUsedConnectionNames.push(connectionName);
-		mutex.unlock();
-
-		pSemaphore->release();
-
 	}
 }
 
@@ -201,6 +173,44 @@ QSqlDatabase DBConnectionPoolPrivate::createConnection(const QString & connectio
 	return db;
 }
 
+void DBConnectionPoolPrivate::initConnections()
+{
+	const QString & connectionName = QString("%1_%2").arg(strDBConnectionName).arg(iLastKey++);
+	const QSqlDatabase & db = createConnection(connectionName);
+
+	if (db.isOpen())
+	{
+		//设置默认连接
+		if (bDefaultConnection)
+		{
+			QSqlDatabase::cloneDatabase(db, QSqlDatabase::defaultConnection);
+		}
+
+		queueConnectionNames.enqueue(connectionName);
+	}
+	
+	while (iLastKey < iMaxConnectionCount)
+	{
+		QSqlDatabase dbClone;
+		const QString & cloneName = QString("%1_%2").arg(strDBConnectionName).arg(iLastKey++);
+		if (db.isValid())
+		{
+			dbClone = QSqlDatabase::cloneDatabase(db, cloneName);
+		}
+
+		if (!dbClone.isOpen())
+		{
+			dbClone = createConnection(cloneName);
+		}
+
+		if (dbClone.isOpen())
+		{
+			queueConnectionNames.enqueue(cloneName);
+		}
+	}
+
+}
+
 
 //==================================================================================================
 DBConnectionPool::DBConnectionPool(const QString configDBName)
@@ -222,18 +232,15 @@ void DBConnectionPool::destory()
 
 QSqlDatabase DBConnectionPool::getConnection()
 {
+	QTime times;
+	times.start();
 	Q_D(DBConnectionPool);
-	return d->getConnection();
+	QSqlDatabase db =  d->getConnection();
+
+	qDebug() << endl << "get Connection Time:" << times.elapsed() / 1000.0 << "s";
+
+	return db;
 }
-
-void DBConnectionPool::releaseConnection(const QSqlDatabase &connection)
-{
-	Q_D(DBConnectionPool);
-	d->releaseConnection(connection);
-}
-
-
-
 
 //==================================================================================================
 

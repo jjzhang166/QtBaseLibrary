@@ -50,6 +50,7 @@ public:
 
 	bool isDBTestOnConnect(const QString & dbName = "db") const;
 	bool isDBOutPutDebugSQL(const QString & dbName = "db") const;
+	bool isDBDefaultConnection(const QString & dbName = "db") const;
 
 	QStringList getDBSqlFiles(const QString & dbName = "db") const;
 
